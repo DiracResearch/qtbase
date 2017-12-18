@@ -105,6 +105,44 @@ UIDeviceOrientation fromQtScreenOrientation(Qt::ScreenOrientation qtOrientation)
     }
     return uiOrientation;
 }
+
+Qt::ScreenOrientations toQtScreenOrientations(UIInterfaceOrientationMask uiInterfaceOrientationMask)
+{
+    Qt::ScreenOrientations qtOrientations = 0;
+    if (uiInterfaceOrientationMask & UIInterfaceOrientationMaskAll)
+        qtOrientations = Qt::PortraitOrientation | Qt::LandscapeOrientation | Qt::InvertedLandscapeOrientation | Qt::InvertedPortraitOrientation;
+    else if (uiInterfaceOrientationMask & UIInterfaceOrientationMaskAllButUpsideDown)
+        qtOrientations = Qt::PortraitOrientation | Qt::LandscapeOrientation | Qt::InvertedLandscapeOrientation;
+    else
+    {
+        if (uiInterfaceOrientationMask & UIInterfaceOrientationMaskPortrait)
+            qtOrientations |= Qt::PortraitOrientation;
+        if (uiInterfaceOrientationMask & UIInterfaceOrientationMaskLandscapeLeft)
+            qtOrientations |= Qt::InvertedLandscapeOrientation;
+        if (uiInterfaceOrientationMask & UIInterfaceOrientationMaskLandscapeRight)
+            qtOrientations |= Qt::LandscapeOrientation;
+        if (uiInterfaceOrientationMask & UIInterfaceOrientationMaskPortraitUpsideDown)
+            qtOrientations |= Qt::InvertedPortraitOrientation;
+        if (uiInterfaceOrientationMask & UIInterfaceOrientationMaskLandscape)
+            qtOrientations |= (Qt::LandscapeOrientation | Qt::InvertedLandscapeOrientation);
+    }
+    return qtOrientations;
+}
+
+UIInterfaceOrientationMask fromQtScreenOrientations(Qt::ScreenOrientations qtOrientations)
+{
+    UIInterfaceOrientationMask uiOrientations = 0;
+    if (qtOrientations & Qt::PortraitOrientation)
+        uiOrientations |= UIInterfaceOrientationMaskPortrait;
+    if (qtOrientations & Qt::InvertedLandscapeOrientation)
+        uiOrientations |= UIInterfaceOrientationMaskLandscapeLeft;
+    if (qtOrientations & Qt::LandscapeOrientation)
+        uiOrientations |= UIInterfaceOrientationMaskLandscapeRight;
+    if (qtOrientations & Qt::InvertedPortraitOrientation)
+        uiOrientations |= UIInterfaceOrientationMaskPortraitUpsideDown;
+    return uiOrientations;
+}
+
 #endif
 
 int infoPlistValue(NSString* key, int defaultValue)

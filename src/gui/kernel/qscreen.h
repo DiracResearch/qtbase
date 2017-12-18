@@ -92,6 +92,7 @@ class Q_GUI_EXPORT QScreen : public QObject
     Q_PROPERTY(Qt::ScreenOrientation primaryOrientation READ primaryOrientation NOTIFY primaryOrientationChanged)
     Q_PROPERTY(Qt::ScreenOrientation orientation READ orientation NOTIFY orientationChanged)
     Q_PROPERTY(Qt::ScreenOrientation nativeOrientation READ nativeOrientation)
+    Q_PROPERTY(Qt::ScreenOrientations allowedOrientations READ allowedOrientations WRITE setAllowedOrientations)
     Q_PROPERTY(qreal refreshRate READ refreshRate NOTIFY refreshRateChanged)
 
 public:
@@ -138,6 +139,12 @@ public:
 
     Qt::ScreenOrientations orientationUpdateMask() const;
     void setOrientationUpdateMask(Qt::ScreenOrientations mask);
+
+    Qt::ScreenOrientations supportedOrientations() const;
+    Qt::ScreenOrientations allowedOrientations() const;
+    void setAllowedOrientations(Qt::ScreenOrientations orientations);
+
+    void setScreenActive(bool alwaysOn);
 
     int angleBetween(Qt::ScreenOrientation a, Qt::ScreenOrientation b) const;
     QTransform transformBetween(Qt::ScreenOrientation a, Qt::ScreenOrientation b, const QRect &target) const;

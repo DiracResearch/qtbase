@@ -122,6 +122,12 @@ public:
     virtual Qt::ScreenOrientation orientation() const;
     virtual void setOrientationUpdateMask(Qt::ScreenOrientations mask);
 
+    virtual Qt::ScreenOrientations supportedOrientations() const;
+    virtual Qt::ScreenOrientations allowedOrientations() const;
+    virtual void setAllowedOrientations(Qt::ScreenOrientations orientations);
+
+    virtual void setScreenActive(bool alwaysOn);
+
     virtual QWindow *topLevelAt(const QPoint &point) const;
     virtual QList<QPlatformScreen *> virtualSiblings() const;
     const QPlatformScreen *screenForPosition(const QPoint &point) const;

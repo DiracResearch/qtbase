@@ -50,6 +50,16 @@
 
 @implementation QIOSApplicationDelegate
 
+@synthesize orientationMask;
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    Q_UNUSED(application);
+    Q_UNUSED(launchOptions);
+    // Override point for customization after application launch.
+    self.orientationMask = [self supportedOrientations];
+    return YES;
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     Q_UNUSED(application);
@@ -67,5 +77,33 @@
     return iosServices->handleUrl(QUrl::fromNSURL(url));
 }
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    Q_UNUSED(application);
+    Q_UNUSED(window);
+    
+    return self.orientationMask;
+}
+
+- (UIInterfaceOrientationMask)supportedOrientations
+{
+    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskAll;
+    NSArray* orientations = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UISupportedInterfaceOrientations"];
+    if (orientations) {
+        orientationMask = 0;
+        for (NSString *orientation in orientations) {
+            if ([orientation isEqualToString:@"UIInterfaceOrientationPortrait"]) {
+                orientationMask |= UIInterfaceOrientationMaskPortrait;
+            } else if ([orientation isEqualToString:@"UIInterfaceOrientationPortraitUpsideDown"]) {
+                orientationMask |= UIInterfaceOrientationMaskPortraitUpsideDown;
+            } else if ([orientation isEqualToString:@"UIInterfaceOrientationLandscapeLeft"]) {
+                orientationMask |= UIInterfaceOrientationMaskLandscapeLeft;
+            } else if ([orientation isEqualToString:@"UIInterfaceOrientationLandscapeRight"]) {
+                orientationMask |= UIInterfaceOrientationMaskLandscapeRight;
+            }
+        }
+    }
+    return orientationMask;
+}
 @end
 

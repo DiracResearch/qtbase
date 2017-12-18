@@ -577,6 +577,32 @@ Qt::ScreenOrientation QScreen::nativeOrientation() const
     return d->platformScreen->nativeOrientation();
 }
 
+Qt::ScreenOrientations QScreen::supportedOrientations() const
+{
+    Q_D(const QScreen);
+    return d->platformScreen->supportedOrientations();
+}
+
+Qt::ScreenOrientations QScreen::allowedOrientations() const
+{
+    Q_D(const QScreen);
+    return d->allowedOrientations;
+}
+
+void QScreen::setAllowedOrientations(Qt::ScreenOrientations orientations)
+{
+    Q_D(QScreen);
+    d->allowedOrientations = orientations;
+    d->platformScreen->setAllowedOrientations(orientations);
+}
+
+void QScreen::setScreenActive(bool alwaysOn)
+{
+    Q_D(QScreen);
+    d->platformScreen->setScreenActive(alwaysOn);
+}
+
+
 /*!
     Convenience function to compute the angle of rotation to get from
     rotation \a a to rotation \a b.

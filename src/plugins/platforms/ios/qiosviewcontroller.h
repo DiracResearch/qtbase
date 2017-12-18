@@ -53,6 +53,7 @@ QT_END_NAMESPACE
 
 #ifndef Q_OS_TVOS
 @property (nonatomic, assign) UIInterfaceOrientation lockedOrientation;
+@property (nonatomic, assign) UIInterfaceOrientationMask allowedOrientations;
 
 // UIViewController
 @property (nonatomic, assign) BOOL prefersStatusBarHidden;

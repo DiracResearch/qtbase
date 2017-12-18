@@ -43,4 +43,9 @@
 #import "qiosviewcontroller.h"
 
 @interface QIOSApplicationDelegate : UIResponder <UIApplicationDelegate>
+
+@property (nonatomic, assign) UIInterfaceOrientationMask orientationMask;
+
+- (UIInterfaceOrientationMask)supportedOrientations;
+
 @end

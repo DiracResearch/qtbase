@@ -67,6 +67,7 @@ public:
     QScreenPrivate()
         : platformScreen(0)
         , orientationUpdateMask(0)
+        , allowedOrientations(0)
     {
     }
 
@@ -85,6 +86,7 @@ public:
     Qt::ScreenOrientation orientation;
     Qt::ScreenOrientation filteredOrientation;
     Qt::ScreenOrientation primaryOrientation;
+    Qt::ScreenOrientations allowedOrientations;
     QRect geometry;
     QRect availableGeometry;
     QDpi logicalDpi;

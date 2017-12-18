@@ -64,6 +64,8 @@ bool isQtApplication();
 #ifndef Q_OS_TVOS
 Qt::ScreenOrientation toQtScreenOrientation(UIDeviceOrientation uiDeviceOrientation);
 UIDeviceOrientation fromQtScreenOrientation(Qt::ScreenOrientation qtOrientation);
+Qt::ScreenOrientations toQtScreenOrientations(UIInterfaceOrientationMask uiInterfaceOrientationMask);
+UIInterfaceOrientationMask fromQtScreenOrientations(Qt::ScreenOrientations qtOrientations);
 #endif
 
 int infoPlistValue(NSString* key, int defaultValue);

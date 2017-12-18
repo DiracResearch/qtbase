@@ -54,6 +54,8 @@
 #include "qioswindow.h"
 #include "quiview.h"
 
+#import "qiosapplicationdelegate.h"
+
 // -------------------------------------------------------------------------
 
 @interface QIOSViewController () {
@@ -233,6 +235,7 @@
 @synthesize prefersStatusBarHidden;
 @synthesize preferredStatusBarUpdateAnimation;
 @synthesize preferredStatusBarStyle;
+@synthesize allowedOrientations = _allowedOrientations;
 #endif
 
 - (id)initWithQIOSScreen:(QT_PREPEND_NAMESPACE(QIOSScreen) *)screen
@@ -379,6 +382,26 @@
 
     if (m_screen)
         m_screen->updateProperties();
+}
+
+- (void)setAllowedOrientations:(UIInterfaceOrientationMask)orientations
+{
+    _allowedOrientations = orientations;
+    
+    QIOSApplicationDelegate *appDelegate = (QIOSApplicationDelegate *)[[UIApplication sharedApplication] delegate];
+    // TODO Filter out all orientations that are not supported by the device (info.plist).
+    appDelegate.orientationMask = orientations;
+    UIInterfaceOrientationMask supportedOrientations = [appDelegate supportedOrientations];
+    if (self.allowedOrientations & UIInterfaceOrientationUnknown) {
+    } else if ((self.allowedOrientations & UIInterfaceOrientationMaskPortrait) && (supportedOrientations & UIInterfaceOrientationMaskPortrait)) {
+        [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
+    } else if ((self.allowedOrientations & UIInterfaceOrientationMaskLandscapeRight) && (supportedOrientations & UIInterfaceOrientationMaskLandscapeRight)) {
+        [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationLandscapeRight) forKey:@"orientation"];
+    } else if ((self.allowedOrientations & UIInterfaceOrientationMaskLandscapeLeft) && (supportedOrientations & UIInterfaceOrientationMaskLandscapeLeft)) {
+        [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationLandscapeLeft) forKey:@"orientation"];
+    } else if ((self.allowedOrientations & UIInterfaceOrientationMaskPortraitUpsideDown) && (supportedOrientations & UIInterfaceOrientationMaskPortraitUpsideDown)) {
+        [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortraitUpsideDown) forKey:@"orientation"];
+    }
 }
 
 // -------------------------------------------------------------------------

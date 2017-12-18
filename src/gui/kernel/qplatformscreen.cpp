@@ -270,6 +270,27 @@ void QPlatformScreen::setOrientationUpdateMask(Qt::ScreenOrientations mask)
     Q_UNUSED(mask);
 }
 
+Qt::ScreenOrientations QPlatformScreen::supportedOrientations() const
+{
+    return Qt::PrimaryOrientation;
+}
+
+Qt::ScreenOrientations QPlatformScreen::allowedOrientations() const
+{
+    return Qt::PrimaryOrientation;
+}
+
+void QPlatformScreen::setAllowedOrientations(Qt::ScreenOrientations orientations)
+{
+    Q_UNUSED(orientations);
+}
+
+void QPlatformScreen::setScreenActive(bool alwaysOn)
+{
+    Q_UNUSED(alwaysOn);
+}
+
+
 QPlatformScreen * QPlatformScreen::platformScreenForWindow(const QWindow *window)
 {
     // QTBUG 32681: It can happen during the transition between screens

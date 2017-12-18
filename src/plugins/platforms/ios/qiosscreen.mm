@@ -462,6 +462,38 @@ void QIOSScreen::setOrientationUpdateMask(Qt::ScreenOrientations mask)
     }
 }
 
+Qt::ScreenOrientations QIOSScreen::supportedOrientations() const
+{
+    QIOSApplicationDelegate *appDelegate = (QIOSApplicationDelegate *)[[UIApplication sharedApplication] delegate];
+    return toQtScreenOrientations([appDelegate supportedOrientations]);
+}
+
+Qt::ScreenOrientations QIOSScreen::allowedOrientations() const
+{
+    QIOSViewController *qtViewController = [m_uiWindow.rootViewController isKindOfClass:[QIOSViewController class]] ?
+        static_cast<QIOSViewController *>(m_uiWindow.rootViewController) : nil;
+    if (qtViewController) {
+        return toQtScreenOrientations(qtViewController.allowedOrientations);
+    }
+    return Qt::PrimaryOrientation;
+}
+
+void QIOSScreen::setAllowedOrientations(Qt::ScreenOrientations orientations)
+{
+    QIOSViewController *qtViewController = [m_uiWindow.rootViewController isKindOfClass:[QIOSViewController class]] ?
+        static_cast<QIOSViewController *>(m_uiWindow.rootViewController) : nil;
+    if (qtViewController) {
+        qtViewController.allowedOrientations = UIInterfaceOrientationMask(fromQtScreenOrientations(orientations));
+        updateProperties();
+    }
+}
+
+void QIOSScreen::setScreenActive(bool alwaysOn)
+{
+    [[UIApplication sharedApplication] setIdleTimerDisabled: alwaysOn];
+}
+
+
 QPixmap QIOSScreen::grabWindow(WId window, int x, int y, int width, int height) const
 {
     if (window && ![reinterpret_cast<id>(window) isKindOfClass:[UIView class]])
